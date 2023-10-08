@@ -7,7 +7,7 @@ W wersji MVP aplikacja będzie działać w przeglądarce. Użykownik będzie mia
 Aplikacja zostanie stworzona z wykorzystaniem następujących technologii:
 + Python + FastAPI
 + Javascript + CSS (Bootstrap)
-+ MariaDB
++ SQLite
 + Docker
 ## Members
 + Daniel Tlałka 76061
