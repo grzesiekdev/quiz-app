@@ -12,3 +12,18 @@ Aplikacja zostanie stworzona z wykorzystaniem następujących technologii:
 ## Members
 + Daniel Tlałka 76061
 + Grzegorz Bednarski 76060
+## How to run
+1. Clone
+```
+https://github.com/grzesiekdev/quiz-app.git
+cd quiz-app
+```
+1. Build docker image
+```
+docker-compose build
+docker-compose up -d
+```
+1. Create database, run alembic migrations
+```
+alembic upgrade head
+```
