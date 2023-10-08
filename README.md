@@ -15,14 +15,19 @@ Aplikacja zostanie stworzona z wykorzystaniem następujących technologii:
 ## How to run
 1. Clone
 ```
-https://github.com/grzesiekdev/quiz-app.git
+git clone https://github.com/grzesiekdev/quiz-app.git
 cd quiz-app
 ```
 2. Build docker image
 ```
 docker-compose up -d --build
 ```
-3. Create database, run alembic migrations
+3. Go to app in browser
+```
+http://127.0.0.1:8000/
+```
++ Running alembic migrations
 ```
 alembic upgrade head
 ```
++ Docs are available at http://127.0.0.1:8000/docs
