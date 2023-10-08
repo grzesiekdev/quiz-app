@@ -1,6 +1,6 @@
-**Tytuł**
+## Quiz-App
 
-Authors: Grzegorz Bednarski, Daniel Tlałka
+Authors: Grzegorz Bednarski, Daniel Tlałka  
 Created at: 08/10/2023
 
 ## Intro
