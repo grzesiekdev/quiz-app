@@ -18,12 +18,12 @@ Aplikacja zostanie stworzona z wykorzystaniem następujących technologii:
 https://github.com/grzesiekdev/quiz-app.git
 cd quiz-app
 ```
-1. Build docker image
+2. Build docker image
 ```
 docker-compose build
 docker-compose up -d
 ```
-1. Create database, run alembic migrations
+3. Create database, run alembic migrations
 ```
 alembic upgrade head
 ```
