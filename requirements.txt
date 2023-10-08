@@ -1,4 +1,6 @@
-fastapi==0.103.2
+fastapi~=0.103.1
 uvicorn==0.23.2
 sqlite-utils==3.35.1
-sqlalchemy==2.0.21
+sqlalchemy~=1.4.44
+alembic~=1.9.4.dev0
+pydantic~=2.3.0
