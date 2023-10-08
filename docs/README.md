@@ -60,6 +60,11 @@ W wersji MVP aplikacja będzie działać w przeglądarce. Użykownik będzie mia
 
 
 ## Open Questions
+1. Kategorie?
+1. Losowe pytania z setów?
+1. Logowanie?
+1. Scoring system? 
+1. Scoreboard?
 
 
 ## References
