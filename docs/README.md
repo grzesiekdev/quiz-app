@@ -5,23 +5,23 @@ Created at: 08/10/2023
 
 ## Intro
 
-###Why/Problem
+### Why/Problem
 Aplikacja będzie służyć szybszemu przyswajaniu wiedzy, tworzeniu quizów, fiszek, oraz ogólnych pomocy dydaktycznych.
 
-###How
-####Frontened:
+### How
+**Frontened:**
 +Javascript + CSS (Bootstrap)
 
-####Backend:
+**Backend:**
 +Python + FastAPI
 +Docker
 +SQLite
 
-###What
+### What
 W wersji MVP aplikacja będzie działać w przeglądarce. Użykownik będzie miał możliwość dodawania swoich własnych quizów / fiszek (pytanie / słówko + odpowiedź). Po dodaniu wszystkich słówek lub pytań, użytkownik będzie miał możliwość udostępnienia danego quizu innemu użytkownikowi, lub skorzystania z utworzonego zestawu samemu. W każdym pytaniu będzie opcja wprowadzenia odpowiedzi przez użytkownika. Po wpisaniu odpowiedzi (lub wypełnieniu całego zestawu) wyświetli się informacja czy odpowiedź jest poprawna.
 
 ## Goals and Non-Goals
-###Goals:
+### Goals:
 1. Kompatybilność przeglądarek w wersji MVP: Głównym celem projektu jest zapewnienie, że wersja MVP aplikacji jest w pełni funkcjonalna i kompatybilna z nowoczesnymi przeglądarkami internetowymi.
 
 1. Tworzenie własnych quizów przez użytkowników: Umożliwienie użytkownikom tworzenia własnych quizów i fiszek, składających się z pytań i odpowiedzi.
@@ -34,7 +34,7 @@ W wersji MVP aplikacja będzie działać w przeglądarce. Użykownik będzie mia
 
 1. Implementacja stosu technologicznego: Pomyślna implementacja wybranego stosu technologicznego, w tym Pythona, FastAPI, JavaScript, CSS (Bootstrap), MariaDB i Dockera.
 
-###Non-Goals:
+### Non-Goals:
 1. Rozwój aplikacji mobilnych: Tworzenie aplikacji mobilnych na platformy iOS lub Android nie jest częścią wersji MVP. Skupiamy się na kompatybilności z przeglądarkami internetowymi.
 
 1. Zaawansowane funkcje użytkownika: Zaawansowane funkcje, takie jak elementy gamifikacji, integracje z mediowymi społecznościowymi lub edycja w czasie rzeczywistym, nie są częścią MVP.
