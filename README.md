@@ -20,8 +20,7 @@ cd quiz-app
 ```
 2. Build docker image
 ```
-docker-compose build
-docker-compose up -d
+docker-compose up -d --build
 ```
 3. Create database, run alembic migrations
 ```
