@@ -9,4 +9,6 @@ Aplikacja zostanie stworzona z wykorzystaniem następujących technologii:
 + Javascript + CSS (Bootstrap)
 + MariaDB
 + Docker
-
+## Members
++ Daniel Tlałka 76061
++ Grzegorz Bednarski 76060
