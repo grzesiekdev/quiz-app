@@ -66,5 +66,6 @@ W wersji MVP aplikacja będzie działać w przeglądarce. Użykownik będzie mia
 1. Scoring system? 
 1. Scoreboard?
 
-
+## Progress
+![Trello](/docs/trello.png)
 ## References
