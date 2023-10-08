@@ -31,3 +31,16 @@ http://127.0.0.1:8000/
 alembic upgrade head
 ```
 + Docs are available at http://127.0.0.1:8000/docs
+### Tips
++ How to open container with zsh
+```
+docker exec -it <container-name or ID> zsh
+```
++ In case of encountering some errors, check logs of container
+```
+docker logs <container-name or ID>
+```
++ If container doesn't work properly, check it's status
+```
+docker ps -a
+```
