@@ -6,7 +6,8 @@ class QuestionBase(BaseModel):
     question_text: str
     answers: str
     correct_answers: str
-
+    set_id: int
+    
 
 class QuestionCreate(QuestionBase):
     set_id: int
@@ -17,7 +18,11 @@ class Question(QuestionBase):
     set_id: int
 
     class Config:
-        orm_mode = True
+        from_attributes = True
+
+
+class QuestionDelete(Question):
+    pass
 
 
 class SetOfQuestionsBase(BaseModel):
@@ -34,4 +39,11 @@ class SetOfQuestions(SetOfQuestionsBase):
     questions: List[Question] = []
 
     class Config:
-        orm_mode = True
+        from_attributes = True
+        
+        
+class QuestionUpdate(BaseModel):
+    question_text: str
+    answers: str
+    correct_answers: str
+    set_id: int

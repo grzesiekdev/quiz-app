@@ -1,5 +1,6 @@
 from fastapi import FastAPI, HTTPException, Depends
 from sqlalchemy.orm import Session
+from fastapi.testclient import TestClient
 
 from database import models, schemas
 from database.database import engine
@@ -9,6 +10,7 @@ from database import database
 models.Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
+client = TestClient(app)
 
 
 @app.get("/")
@@ -32,6 +34,28 @@ def read_question(question_id: int, db: Session = Depends(database.get_db)):
     db_question = crud.get_question(db, question_id=question_id)
     if db_question is None:
         raise HTTPException(status_code=404, detail="Question not found")
+    return db_question
+
+
+@app.put("/questions/{question_id}", response_model=schemas.Question)
+def update_question(
+    question_id: int, question: schemas.QuestionUpdate, db: Session = Depends(database.get_db)
+):
+    db_question = crud.get_question(db, question_id=question_id)
+    if db_question is None:
+        raise HTTPException(status_code=404, detail="Question not found")
+
+    updated_question = crud.update_question(db=db, question_id=question_id, question=question)
+    return updated_question
+
+
+@app.delete("/questions/{question_id}", response_model=schemas.Question)
+def delete_question(question_id: int, db: Session = Depends(database.get_db)):
+    db_question = crud.get_question(db, question_id=question_id)
+    if db_question is None:
+        raise HTTPException(status_code=404, detail="Question not found")
+
+    crud.delete_question(db=db, question_id=question_id)
     return db_question
 
 # Routes for managing sets of questions

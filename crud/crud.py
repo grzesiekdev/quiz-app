@@ -50,3 +50,21 @@ def create_question_in_set(db: Session, question: schemas.QuestionCreate, set_id
     db.commit()
     db.refresh(db_question)
     return db_question
+
+
+def update_question(db: Session, question_id: int, question: schemas.QuestionUpdate):
+    db_question = db.query(models.Question).filter(models.Question.id == question_id).first()
+    
+    if db_question:
+        db_question.correct_answers = question.correct_answers
+        db.commit()
+        db.refresh(db_question)
+    
+    return db_question
+
+
+def delete_question(db: Session, question_id: int):
+    db_question = db.query(models.Question).filter(models.Question.id == question_id).first()
+    if db_question:
+        db.delete(db_question)
+        db.commit()
