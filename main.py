@@ -1,6 +1,9 @@
-from fastapi import FastAPI, HTTPException, Depends
+from fastapi import FastAPI, HTTPException, Depends, Request
+from fastapi.responses import HTMLResponse
 from sqlalchemy.orm import Session
 from fastapi.testclient import TestClient
+from fastapi.templating import Jinja2Templates
+from fastapi.staticfiles import StaticFiles
 
 from database import models, schemas
 from database.database import engine
@@ -12,10 +15,13 @@ models.Base.metadata.create_all(bind=engine)
 app = FastAPI()
 client = TestClient(app)
 
+templates = Jinja2Templates(directory="templates")
+app.mount("/static", StaticFiles(directory="static"), name="static")
 
-@app.get("/")
-def read_root():
-    return {"message": "Hello, FastAPI with SQLite!"}
+
+@app.get("/", response_class=HTMLResponse)
+def read_root(request: Request):
+    return templates.TemplateResponse("panel/index.html", {'request': request})
 
 
 @app.post("/questions/", response_model=schemas.Question)
