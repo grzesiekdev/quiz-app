@@ -6,6 +6,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Quiz App</title>
   <link href="{{ url_for('static', path='/assets/css/styles.min.css') }}" rel="stylesheet">
+  <link href="{{ url_for('static', path='/assets/css/font-awesome.min.css') }}" rel="stylesheet">
+  <link href="{{ url_for('static', path='/assets/css/custom.css') }}" rel="stylesheet">
 </head>
 
 <body>
@@ -18,12 +20,10 @@
 
   <script src="{{ url_for('static', path='/assets/libs/jquery/dist/jquery.min.js') }}"></script>
   <script src="{{ url_for('static', path='/assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js') }}"></script>
-  <script src="{{ url_for('static', path='/assets/js/app.min.js') }}"></script>
-  <script src="{{ url_for('static', path='/assets/js/dashboard.js') }}"></script>
+  <script src="{{ url_for('static', path='/assets/js/app.min.js') }}" type="module"></script>
   <script src="{{ url_for('static', path='/assets/js/sidebarmenu.js') }}"></script>
-  <script src="{{ url_for('static', path='/assets/js/dashboard.js') }}"></script>
+  <script src="{{ url_for('static', path='/assets/js/fontawesome.min.js') }}"></script>
   <script src="{{ url_for('static', path='/assets/libs/simplebar/dist/simplebar.js') }}"></script>
-  <script src="{{ url_for('static', path='/assets/libs/apexcharts/dist/apexcharts.min.js') }}"></script>
 </body>
 
 </html>
