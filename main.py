@@ -10,11 +10,17 @@ from database import models, schemas
 from database.database import engine
 from crud import crud
 from database import database
+from pydantic import BaseModel
+
 
 models.Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
 client = TestClient(app)
+
+class TestResult(BaseModel):
+    user_answers: list[str]
+    correct_answers: list[str]
 
 templates = Jinja2Templates(directory="templates")
 app.mount("/static", StaticFiles(directory="static"), name="static")
@@ -107,3 +113,12 @@ def read_questions_in_set(set_id: int, skip: int = 0, limit: int = 100, db: Sess
 def create_question_in_set(set_id: int, question: schemas.QuestionCreate, db: Session = Depends(database.get_db)):
     return crud.create_question_in_set(db=db, question=question, set_id=set_id)
 
+
+@app.post("/submit-test/")
+def submit_test(test_result: TestResult):
+    score = 0
+    for user_answer, correct_answer in zip(test_result.user_answers, test_result.correct_answers):
+        if user_answer == correct_answer:
+            score += 1
+
+    return {"score": score}
