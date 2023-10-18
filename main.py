@@ -10,17 +10,12 @@ from database import models, schemas
 from database.database import engine
 from crud import crud
 from database import database
-from pydantic import BaseModel
 
 
 models.Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
 client = TestClient(app)
-
-class TestResult(BaseModel):
-    user_answers: list[str]
-    correct_answers: list[str]
 
 templates = Jinja2Templates(directory="templates")
 app.mount("/static", StaticFiles(directory="static"), name="static")
