@@ -119,7 +119,7 @@ def create_question_in_set(set_id: int, question: schemas.QuestionCreate, db: Se
 
 
 @app.post("/submit-test/")
-def submit_test(test_result: TestResult):
+def submit_test(test_result: schemas.TestResult):
     score = 0
     for user_answer, correct_answer in zip(test_result.user_answers, test_result.correct_answers):
         if user_answer == correct_answer:
