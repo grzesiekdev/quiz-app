@@ -47,3 +47,7 @@ class QuestionUpdate(BaseModel):
     answers: str
     correct_answers: str
     set_id: int
+    
+class TestResult(BaseModel):
+    user_answers: list[str]
+    correct_answers: list[str]
