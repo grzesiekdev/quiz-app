@@ -1,0 +1,33 @@
+{% extends "panel/page.html" %}
+{% block content %}
+<h1 class="quiz-name">{{ set_of_questions.name }}</h1>
+<div class="my-4 quiz-description">{{ set_of_questions.description }}</div>
+{% for question in set_of_questions.questions %}
+    {% set outer_loop_index = loop.index %}
+    <div class="question ml-sm-5 pl-sm-5 pt-2" hidden>
+        <div class="py-2 h5"><b>{{ outer_loop_index }}. {{ question.question_text }}</b></div>
+        {% set answers = question.answers.split(',') %}
+        {% set correct_answers = question.correct_answers.split(',') %}
+        {% set type = 'checkbox' if correct_answers|length > 1 else 'radio' %}
+        <div class="ml-md-3 ml-sm-3 pl-md-5 pt-sm-0 pt-3" id="options">
+            {% for answer in answers %}
+            <label class="options">{{ answer }}
+                <input type="{{ type }}" name="{{outer_loop_index}}_radio">
+                <span class="checkmark"></span>
+            </label>
+            {% endfor %}
+        </div>
+    </div>
+{% endfor %}
+    <div class="d-flex align-items-center pt-3">
+        <div id="prev" class="mx-1" >
+            <button class="btn btn-primary previous-question-button" hidden>Previous</button>
+        </div>
+        <div class="ml-auto mr-sm-5">
+            <button class="btn btn-success next-question-button">Next</button>
+        </div>
+        <div class="ml-auto mr-sm-5 finish-button" hidden>
+            <a href="#" class="btn btn-success">Finish</a>
+        </div>
+    </div>
+{% endblock %}

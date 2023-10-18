@@ -1,0 +1,15 @@
+{% extends "panel/page.html" %}
+{% block content %}
+<h1 class="quiz-name">Add new quiz!</h1>
+<form class="mt-4 new-quiz-form">
+  <div class="mb-3">
+    <label for="quizName" class="form-label">Quiz name</label>
+    <input type="text" class="form-control" id="quizName">
+  </div>
+  <div class="mb-3">
+    <label for="quizDescription" class="form-label">Quiz description</label>
+    <textarea class="form-control" id="quizDescription"></textarea>
+  </div>
+  <button type="submit" class="btn btn-success">Submit</button>
+</form>
+{% endblock %}
