@@ -26,6 +26,9 @@ def read_root(request: Request):
 
 @app.post("/questions/", response_model=schemas.Question)
 def create_question(question: schemas.QuestionCreate, db: Session = Depends(database.get_db)):
+    if not question.correct_answers:
+        raise HTTPException(status_code=400, detail="At least one correct answer is required")
+
     return crud.create_question(db=db, question=question, set_id=question.set_id)
 
 
