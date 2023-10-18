@@ -24,6 +24,15 @@ def read_root(request: Request):
     return templates.TemplateResponse("panel/index.html", {'request': request})
 
 
+@app.get("/new-quiz", response_class=HTMLResponse)
+def read_root(request: Request):
+    return templates.TemplateResponse("panel/quiz/new-quiz.html", {'request': request})
+
+
+@app.get("/new-question", response_class=HTMLResponse)
+def read_root(request: Request):
+    return templates.TemplateResponse("panel/quiz/new-question.html", {'request': request})
+
 @app.post("/questions/", response_model=schemas.Question)
 def create_question(question: schemas.QuestionCreate, db: Session = Depends(database.get_db)):
     return crud.create_question(db=db, question=question, set_id=question.set_id)

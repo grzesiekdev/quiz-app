@@ -84,5 +84,50 @@ function quizFlow(){
     });
 }
 
+function addNewQuiz() {
+    $(".new-quiz-form").submit(function (event) {
+      event.preventDefault(); // Prevent the default form submission
 
-export {handleSetsOfQuestions, quizFlow};
+      // Get the form data
+      var quizName = $("#quizName").val();
+      var quizDescription = $("#quizDescription").val();
+
+      // Prepare the data to send
+      var data = {
+        'name': quizName,
+        'description': quizDescription,
+      };
+
+      // Make a POST request to the FastAPI endpoint
+      fetch("/set-of-questions/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      })
+        .then((response) => {
+          if (response.ok) {
+            return response.json();
+          } else {
+            throw new Error("Failed to submit the form");
+          }
+        })
+        .then((data) => {
+          // Handle the response from the server
+          console.log("Server response:", data);
+
+          $("#quizName").val("");
+          $("#quizDescription").val("");
+
+          let successBanner = $('<div class="alert alert-success" role="alert">Quiz added successfully! You can now <a href="/new-question">Add some questions</a></div>');
+          $("form").before(successBanner);
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    });
+}
+
+
+export {handleSetsOfQuestions, quizFlow, addNewQuiz};
