@@ -84,10 +84,6 @@ function handleAddingNewQuestions(){
         'correct_answers': correctAnswers,
         'set_id': selectedQuiz
       };
-      console.log(question);
-      console.log(answers);
-      console.log(correctAnswers);
-      console.log(selectedQuiz);
 
          let jsonPayload = JSON.stringify(data);
 
@@ -106,8 +102,8 @@ function handleAddingNewQuestions(){
                  }
              })
              .then((responseJson) => {
-                 // Handle the response from the server here
-                 console.log("Server response:", responseJson);
+                 let successBanner = $('<div class="alert alert-success" role="alert">Question added successfully!</div>');
+                 $("form").before(successBanner);
              })
              .catch((error) => {
                  console.error(error);
