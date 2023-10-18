@@ -98,7 +98,9 @@ function handleAddingNewQuestions(){
                  if (response.ok) {
                      return response.json();
                  } else {
-                     throw new Error("Failed to submit the form");
+                     return response.json().then((errorResponse) => {
+                         throw new Error(errorResponse.detail);
+                     });
                  }
              })
              .then((responseJson) => {
@@ -106,7 +108,9 @@ function handleAddingNewQuestions(){
                  $("form").before(successBanner);
              })
              .catch((error) => {
-                 console.error(error);
+                 let errorBanner = $('<div class="alert alert-danger" role="alert">' + error.message + ' </div>');
+                 $("form").before(errorBanner);
+                 console.error(error.message);
              });
 
       // Clear form after submission
