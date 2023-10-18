@@ -4,6 +4,7 @@ from sqlalchemy.orm import Session
 from fastapi.testclient import TestClient
 from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
+from datetime import datetime
 
 from database import models, schemas
 from database.database import engine
@@ -77,7 +78,9 @@ def delete_question(question_id: int, db: Session = Depends(database.get_db)):
 
 @app.post("/sets-of-questions/", response_model=schemas.SetOfQuestions)
 def create_set_of_questions(set_of_questions: schemas.SetOfQuestionsCreate, db: Session = Depends(database.get_db)):
-    return crud.create_set_of_questions(db=db, set_of_questions=set_of_questions)
+    created_date = datetime.utcnow()
+    
+    return crud.create_set_of_questions(db=db, set_of_questions={**set_of_questions, "created_date": created_date})
 
 
 @app.get("/sets-of-questions/", response_model=list[schemas.SetOfQuestions])
