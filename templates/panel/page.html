@@ -1,0 +1,13 @@
+{% extends "layouts/layout_base.html" %}
+{% block body %}
+
+{% include "panel/_partials/sidebar.html" %}
+<div class="body-wrapper">
+    {% include "panel/_partials/header.html" %}
+    <div class="container-fluid">
+      {% block content %}
+      {% endblock %}
+    </div>
+    {% include "panel/_partials/footer.html" %}
+</div>
+{% endblock %}

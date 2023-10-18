@@ -4,3 +4,5 @@ sqlite-utils==3.35.1
 sqlalchemy~=1.4.44
 alembic~=1.9.4.dev0
 pydantic~=2.3.0
+Jinja2~=3.1.2
+httpx~=0.25.0

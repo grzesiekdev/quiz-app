@@ -45,7 +45,8 @@ def get_questions_in_set(db: Session, set_id: int, skip: int = 0, limit: int = 1
 
 
 def create_question_in_set(db: Session, question: schemas.QuestionCreate, set_id: int):
-    db_question = models.Question(**question.dict(), set_id=set_id)
+    db_question = models.Question(**question.dict())
+    db_question.set_id = set_id
     db.add(db_question)
     db.commit()
     db.refresh(db_question)
