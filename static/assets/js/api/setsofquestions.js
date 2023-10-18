@@ -8,7 +8,7 @@ function getSetsOfQuestions(url) {
         });
 }
 
-function createSetCard(name, description, id) {
+function createSetCard(name, description, id, numberOfQuestions) {
     // Create the card structure using jQuery
     const card = $('<div class="col-md-3 my-2">')
         .append($('<div class="card-sl">')
@@ -17,6 +17,7 @@ function createSetCard(name, description, id) {
             )
             .append('<a class="card-action"><i class="fa fa-heart"></i></a>')
             .append($('<div class="card-heading set-title">').text(name))
+            .append($('<div class="card-text set-number-of-questions" style="font-size:12px;">').text("Number of questions: " + numberOfQuestions))
             .append($('<div class="card-text set-description">').text(description))
             .append('<div class="card-text set-date"><!-- TODO: Date will be here... --></div>')
             .append('<a href="/set-of-questions/' + id + '" class="card-button">Take the quiz</a>')
@@ -30,7 +31,8 @@ function handleSetsOfQuestions(){
 getSetsOfQuestions('/sets-of-questions/')
     .then(data => {
         data.forEach(set => {
-            createSetCard(set.name, set.description, set.id);
+            let numberOfQuestions = set.questions.length;
+            createSetCard(set.name, set.description, set.id, numberOfQuestions);
         });
     })
     .catch(error => {
@@ -70,10 +72,6 @@ function quizFlow(){
             currentQuestionIndex++;
             showQuestion(currentQuestionIndex);
         }
-    });
-
-    $finishButton.on('click', function () {
-        // Handle finish/submit action here
     });
 
     $('.previous-question-button').on('click', function () {
