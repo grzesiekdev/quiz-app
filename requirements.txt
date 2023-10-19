@@ -6,3 +6,4 @@ alembic~=1.9.4.dev0
 pydantic~=2.3.0
 Jinja2~=3.1.2
 httpx~=0.25.0
+pytest~=7.4.2

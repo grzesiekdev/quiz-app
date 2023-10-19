@@ -1,3 +1,4 @@
 .idea
 __pycache__
 data/quizapp.db
+.pytest_cache
