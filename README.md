@@ -29,6 +29,12 @@ http://127.0.0.1:8000/
 + Running alembic migrations
 ```
 alembic upgrade head
+cd tests
+alembic upgrade head # for test database
+```
++ Running tests
+```
+pytest # run in root directory
 ```
 + Docs are available at http://127.0.0.1:8000/docs
 ### Tips
