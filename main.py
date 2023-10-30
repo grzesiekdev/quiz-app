@@ -90,7 +90,12 @@ def delete_question(question_id: int, db: Session = Depends(database.get_db)):
 def create_set_of_questions(set_of_questions: schemas.SetOfQuestionsCreate, db: Session = Depends(database.get_db)):
     created_date = datetime.utcnow()
     
-    return crud.create_set_of_questions(db=db, set_of_questions={**set_of_questions, "created_date": created_date})
+    created_set_of_questions = crud.create_set_of_questions(db=db, set_of_questions=set_of_questions)
+    
+    if not created_set_of_questions:
+        raise HTTPException(status_code=500, detail="Failed to create SetOfQuestions")
+    
+    return created_set_of_questions
 
 
 @app.get("/sets-of-questions/", response_model=list[schemas.SetOfQuestions])
