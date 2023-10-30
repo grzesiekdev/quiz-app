@@ -89,12 +89,9 @@ def delete_question(question_id: int, db: Session = Depends(database.get_db)):
 @app.post("/set-of-questions/", response_model=schemas.SetOfQuestions)
 def create_set_of_questions(set_of_questions: schemas.SetOfQuestionsCreate, db: Session = Depends(database.get_db)):
     created_date = datetime.utcnow()
-    
     created_set_of_questions = crud.create_set_of_questions(db=db, set_of_questions=set_of_questions)
-    
     if not created_set_of_questions:
         raise HTTPException(status_code=500, detail="Failed to create SetOfQuestions")
-    
     return created_set_of_questions
 
 
@@ -121,6 +118,16 @@ def read_questions_in_set(set_id: int, skip: int = 0, limit: int = 100, db: Sess
 @app.post("/set-of-questions/{set_id}/questions/", response_model=schemas.Question)
 def create_question_in_set(set_id: int, question: schemas.QuestionCreate, db: Session = Depends(database.get_db)):
     return crud.create_question_in_set(db=db, question=question, set_id=set_id)
+
+
+@app.delete("/set-of-questions/{set_id}", response_model=schemas.SetOfQuestions)
+def delete_set_of_questions(set_id: int, db: Session = Depends(database.get_db)):
+    set_of_questions = crud.get_set_of_questions(db, set_id)
+    if set_of_questions is None:
+        raise HTTPException(status_code=404, detail="Set of questions not found")
+    db.delete(set_of_questions)
+    db.commit()
+    return set_of_questions
 
 
 @app.post("/submit-test/")
