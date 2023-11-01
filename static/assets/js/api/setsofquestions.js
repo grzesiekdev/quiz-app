@@ -10,12 +10,12 @@ function getSetsOfQuestions(url) {
 
 function createSetCard(name, description, id, numberOfQuestions) {
     // Create the card structure using jQuery
-    const card = $('<div class="col-md-3 my-2">')
+    const card = $('<div class="col-md-3 my-2" data-quiz-id="' + id + '">')
         .append($('<div class="card-sl">')
             .append($('<div class="card-image">')
                 .append('<img src="https://altc.alt.ac.uk/blog/wp-content/uploads/sites/1112/2022/08/Blog-Cover-Guidlines-707x409.png">')
             )
-            .append('<a class="card-action"><i class="fa fa-heart"></i></a>')
+            .append($('<a class="card-action"><i class="fa fa-times"></i></a>'))
             .append($('<div class="card-heading set-title">').text(name))
             .append($('<div class="card-text set-number-of-questions" style="font-size:12px;">').text("Number of questions: " + numberOfQuestions))
             .append($('<div class="card-text set-description">').text(description))
@@ -127,5 +127,25 @@ function addNewQuiz() {
     });
 }
 
+function initializeCardDelete() {
+    $('.list-of-quizes').on('click', '.card-action', function(event) {
+        event.preventDefault();
 
-export {handleSetsOfQuestions, quizFlow, addNewQuiz};
+        const card = $(this).closest('.col-md-3.my-2');
+        const setId = card.data('quiz-id');
+        
+        $.ajax({
+            url: `/set-of-questions/${setId}`,
+            type: 'DELETE',
+            success: function(data) {
+                card.remove();
+            },
+            error: function(xhr, textStatus, error) {
+                console.log('Error deleting set of questions:', error);
+            }
+        });
+    });
+}
+
+
+export {handleSetsOfQuestions, quizFlow, addNewQuiz, initializeCardDelete};

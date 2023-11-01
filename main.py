@@ -35,6 +35,7 @@ def read_root(request: Request):
 def read_root(request: Request):
     return templates.TemplateResponse("panel/quiz/new-question.html", {'request': request})
 
+
 @app.post("/questions/", response_model=schemas.Question)
 def create_question(question: schemas.QuestionCreate, db: Session = Depends(database.get_db)):
     set_of_questions = crud.get_set_of_questions(db, set_id=question.set_id)
@@ -45,7 +46,6 @@ def create_question(question: schemas.QuestionCreate, db: Session = Depends(data
         raise HTTPException(status_code=400, detail="At least one correct answer is required")
 
     return crud.create_question(db=db, question=question, set_id=question.set_id)
-
 
 
 @app.get("/questions/", response_model=list[schemas.Question])
