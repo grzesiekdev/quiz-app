@@ -40,6 +40,18 @@ def create_set_of_questions(db: Session, set_of_questions: schemas.SetOfQuestion
     return db_set_of_questions
 
 
+def update_set_of_questions(db: Session, set_id: int, set_of_questions: schemas.SetOfQuestionsUpdate):
+    db_set_of_questions = db.query(models.SetOfQuestions).filter(models.SetOfQuestions.id == set_id).first()
+
+    if db_set_of_questions:
+        db_set_of_questions.name = set_of_questions.name
+        db_set_of_questions.description = set_of_questions.description
+        db.commit()
+        db.refresh(db_set_of_questions)
+
+    return db_set_of_questions
+
+
 def get_questions_in_set(db: Session, set_id: int, skip: int = 0, limit: int = 100):
     return db.query(models.Question).filter(models.Question.set_id == set_id).offset(skip).limit(limit).all()
 

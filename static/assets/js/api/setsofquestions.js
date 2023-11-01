@@ -127,13 +127,57 @@ function addNewQuiz() {
     });
 }
 
+function editQuiz() {
+    $(".edit-quiz-form").submit(function (event) {
+        event.preventDefault(); // Prevent the default form submission
+
+        // Get the form data
+        var quizName = $("#quizName").val();
+        var quizDescription = $("#quizDescription").val();
+        var setId = $("#setId").val(); // Add a hidden input field for the set_id in your HTML
+
+        // Prepare the data to send
+        var data = {
+            'name': quizName,
+            'description': quizDescription,
+        };
+        console.log(data);
+
+        // Make a PUT request to the FastAPI endpoint
+        fetch(`/set-of-questions/${setId}`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(data),
+        })
+        .then((response) => {
+            if (response.ok) {
+                return response.json();
+            } else {
+                throw new Error("Failed to submit the form");
+            }
+        })
+        .then((data) => {
+            // Handle the response from the server
+            console.log("Server response:", data);
+
+            let successBanner = $('<div class="alert alert-success" role="alert">Quiz edited successfully! <a href="/set-of-questions/'+data.id+'">Take a look</a></div>');
+            $("form").before(successBanner);
+        })
+        .catch((error) => {
+            console.error(error);
+        });
+    });
+}
+
 function initializeCardDelete() {
     $('.list-of-quizes').on('click', '.card-action', function(event) {
         event.preventDefault();
 
         const card = $(this).closest('.col-md-3.my-2');
         const setId = card.data('quiz-id');
-        
+
         $.ajax({
             url: `/set-of-questions/${setId}`,
             type: 'DELETE',
@@ -148,4 +192,4 @@ function initializeCardDelete() {
 }
 
 
-export {handleSetsOfQuestions, quizFlow, addNewQuiz, initializeCardDelete};
+export {handleSetsOfQuestions, quizFlow, addNewQuiz, initializeCardDelete, editQuiz};

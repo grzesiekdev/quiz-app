@@ -27,13 +27,29 @@ def read_root(request: Request):
 
 
 @app.get("/new-quiz", response_class=HTMLResponse)
-def read_root(request: Request):
+def new_quiz_template(request: Request):
     return templates.TemplateResponse("panel/quiz/new-quiz.html", {'request': request})
 
 
+@app.get("/edit-quiz/{set_id}", response_class=HTMLResponse)
+def edit_quiz(set_id: int, request: Request, db: Session = Depends(database.get_db)):
+    db_set_of_questions = crud.get_set_of_questions(db, set_id=set_id)
+    if db_set_of_questions is None:
+        raise HTTPException(status_code=404, detail="Set of questions not found")
+    return templates.TemplateResponse("panel/quiz/edit-quiz.html", {'request': request, 'set_of_questions': db_set_of_questions})
+
+
 @app.get("/new-question", response_class=HTMLResponse)
-def read_root(request: Request):
+def new_question_template(request: Request):
     return templates.TemplateResponse("panel/quiz/new-question.html", {'request': request})
+
+
+@app.get("/edit-question/{question_id}", response_class=HTMLResponse)
+def edit_question(question_id: int, request: Request, db: Session = Depends(database.get_db)):
+    db_question = crud.get_question(db, question_id=question_id)
+    if db_question is None:
+        raise HTTPException(status_code=404, detail="Question not found")
+    return templates.TemplateResponse("panel/quiz/edit-question.html", {'request': request})
 
 
 @app.post("/questions/", response_model=schemas.Question)
@@ -118,6 +134,18 @@ def read_questions_in_set(set_id: int, skip: int = 0, limit: int = 100, db: Sess
 @app.post("/set-of-questions/{set_id}/questions/", response_model=schemas.Question)
 def create_question_in_set(set_id: int, question: schemas.QuestionCreate, db: Session = Depends(database.get_db)):
     return crud.create_question_in_set(db=db, question=question, set_id=set_id)
+
+
+@app.put("/set-of-questions/{set_id}", response_model=schemas.SetOfQuestions)
+def update_set_of_questions(
+    set_id: int, set_of_questions: schemas.SetOfQuestionsUpdate, db: Session = Depends(database.get_db)
+):
+    db_set_of_questions = crud.get_set_of_questions(db, set_id=set_id)
+    if db_set_of_questions is None:
+        raise HTTPException(status_code=404, detail="Set of questions not found")
+
+    updated_set_of_questions = crud.update_set_of_questions(db=db, set_id=set_id, set_of_questions=set_of_questions)
+    return updated_set_of_questions
 
 
 @app.delete("/set-of-questions/{set_id}", response_model=schemas.SetOfQuestions)

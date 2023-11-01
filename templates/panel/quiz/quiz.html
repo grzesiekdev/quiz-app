@@ -1,11 +1,22 @@
 {% extends "panel/page.html" %}
 {% block content %}
-<h1 class="quiz-name">{{ set_of_questions.name }}</h1>
+<h1 class="quiz-name">
+    {{ set_of_questions.name }}
+    <a href="/edit-quiz/{{ set_of_questions.id }}" style="font-size:19px;" title="Edit quiz">
+    <i class="fa-solid fa-pen"></i>
+    </a>
+</h1>
+
+
 <div class="my-4 quiz-description">{{ set_of_questions.description }}</div>
 {% for question in set_of_questions.questions %}
     {% set outer_loop_index = loop.index %}
     <div class="question ml-sm-5 pl-sm-5 pt-2" hidden>
-        <div class="py-2 h5"><b>{{ outer_loop_index }}. {{ question.question_text }}</b></div>
+        <div class="py-2 h5"><b>{{ outer_loop_index }}. {{ question.question_text }}</b>
+            <a href="/edit-question/{{ question.id }}" style="font-size:15px;" title="Edit question">
+            <i class="fa-solid fa-pen"></i>
+            </a>
+        </div>
         {% set answers = question.answers.split(',') %}
         {% set correct_answers = question.correct_answers.split(',') %}
         {% set type = 'checkbox' if correct_answers|length > 1 else 'radio' %}
