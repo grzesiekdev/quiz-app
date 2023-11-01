@@ -117,7 +117,7 @@ function addNewQuiz() {
 
           $("#quizName").val("");
           $("#quizDescription").val("");
-
+          $(".alert.alert-success").remove();
           let successBanner = $('<div class="alert alert-success" role="alert">Quiz added successfully! You can now <a href="/new-question">Add some questions</a></div>');
           $("form").before(successBanner);
         })
@@ -160,7 +160,7 @@ function editQuiz() {
         .then((data) => {
             // Handle the response from the server
             console.log("Server response:", data);
-
+            $(".alert.alert-success").remove();
             let successBanner = $('<div class="alert alert-success" role="alert">Quiz edited successfully! <a href="/set-of-questions/'+data.id+'">Take a look</a></div>');
             $("form").before(successBanner);
         })
@@ -181,6 +181,9 @@ function initializeCardDelete() {
             url: `/set-of-questions/${setId}`,
             type: 'DELETE',
             success: function(data) {
+                $(".alert.alert-success").remove();
+                let successBanner = $('<div class="alert alert-success" role="alert">Quiz deleted successfully!</div>');
+                $(".list-of-quizes").before(successBanner);
                 card.remove();
             },
             error: function(xhr, textStatus, error) {

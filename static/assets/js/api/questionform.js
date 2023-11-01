@@ -113,10 +113,12 @@ function handleAddEditQuestions() {
             }
         })
         .then((responseJson) => {
+            $(".alert.alert-success").remove();
             let successBanner = $('<div class="alert alert-success" role="alert">Question ' + (isEdit ? 'edited' : 'added') + ' successfully!</div>');
             $("form").before(successBanner);
         })
         .catch((error) => {
+            $(".alert.alert-success").remove();
             let errorBanner = $('<div class="alert alert-danger" role="alert">' + error.message + ' </div>');
             $("form").before(errorBanner);
             console.error(error.message);
