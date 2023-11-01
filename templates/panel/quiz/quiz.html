@@ -11,7 +11,7 @@
 <div class="my-4 quiz-description">{{ set_of_questions.description }}</div>
 {% for question in set_of_questions.questions %}
     {% set outer_loop_index = loop.index %}
-    <div class="question ml-sm-5 pl-sm-5 pt-2" hidden>
+    <div class="question ml-sm-5 pl-sm-5 pt-2" hidden data-question-id="{{ question.id }}">
         <div class="py-2 h5"><b>{{ outer_loop_index }}. {{ question.question_text }}</b>
             <a href="/edit-question/{{ question.id }}" style="font-size:15px;" title="Edit question">
             <i class="fa-solid fa-pen"></i>
@@ -38,7 +38,7 @@
             <button class="btn btn-success next-question-button">Next</button>
         </div>
         <div class="ml-auto mr-sm-5 finish-button" hidden>
-            <a href="#" class="btn btn-success">Finish</a>
+            <a href="/test-results" class="btn btn-success">Finish</a>
         </div>
     </div>
 {% endblock %}

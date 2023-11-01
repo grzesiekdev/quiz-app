@@ -159,10 +159,18 @@ def delete_set_of_questions(set_id: int, db: Session = Depends(database.get_db))
 
 
 @app.post("/submit-test/")
-def submit_test(test_result: schemas.TestResult):
+def submit_test(test_result: schemas.TestResult, db: Session = Depends(database.get_db)):
     score = 0
-    for user_answer, correct_answer in zip(test_result.user_answers, test_result.correct_answers):
-        if user_answer == correct_answer:
-            score += 1
+    for question_id, selected_options in test_result.user_answers.items():
+        question = crud.get_question(db, question_id)
+        if question:
+            correct_answers = set(question.correct_answers.split(","))
+            if set(selected_options) == correct_answers:
+                score += 1
 
     return {"score": score}
+
+
+@app.get("/test-results", response_class=HTMLResponse)
+def read_root(request: Request):
+    return templates.TemplateResponse("panel/quiz/test-results.html", {'request': request})

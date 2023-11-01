@@ -193,5 +193,71 @@ function initializeCardDelete() {
     });
 }
 
+function collectAndSendAnswers() {
+  // Store the user's answers in an object
+  var userAnswers = {};
 
-export {handleSetsOfQuestions, quizFlow, addNewQuiz, initializeCardDelete, editQuiz};
+  // When the "Finish" button is clicked
+  $(".finish-button a").on("click", function (e) {
+    e.preventDefault();
+
+    // Loop through each question to collect answers
+    $(".question").each(function (index) {
+      var questionNumber = $(this).data('question-id');
+
+      // Check if it's a radio button or checkbox question
+      var inputType = $(this).find("input[type=radio], input[type=checkbox]").attr("type");
+
+      // Collect the selected options for the question
+      var selectedOptions = [];
+      $(this).find("input:checked").each(function () {
+        selectedOptions.push($(this).parent().text().trim());
+      });
+
+      // Store the selected options in the userAnswers object
+      userAnswers[questionNumber] = selectedOptions;
+    });
+
+    // Convert the userAnswers object to a JSON string
+      let answersJSON = JSON.stringify(userAnswers);
+        window.location.href = "/test-results?answers=" + encodeURIComponent(answersJSON);
+  });
+}
+
+function extractAnswersFromURL() {
+  // Extract the answers from the URL query string
+  const urlParams = new URLSearchParams(window.location.search);
+  const answersJSON = urlParams.get("answers");
+
+  if (answersJSON) {
+    const answers = JSON.parse(decodeURIComponent(answersJSON));
+
+const userAnswers = {};
+
+// Transform the provided answers into the expected format
+for (const questionNumber in answers) {
+  userAnswers[questionNumber] = answers[questionNumber];
+}
+    const testResult = {
+      user_answers: userAnswers,
+    };
+    console.log(testResult);
+    // Send the answers to the server
+    $.ajax({
+      type: "POST",
+      url: "/submit-test/",
+      data: JSON.stringify(testResult),
+      contentType: "application/json",
+      success: function (response) {
+        // Display the score on the page
+        const score = response.score;
+        $("#score").text("Your Score: " + score);
+      },
+      error: function (xhr, textStatus, error) {
+        console.log('Error when submitting quiz:', xhr.responseText);
+      }
+    });
+  }
+}
+
+export {handleSetsOfQuestions, quizFlow, addNewQuiz, initializeCardDelete, editQuiz, collectAndSendAnswers, extractAnswersFromURL};
