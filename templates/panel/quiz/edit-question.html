@@ -1,7 +1,7 @@
 {% extends "panel/page.html" %}
 {% block content %}
 <h1 class="quiz-name">Edit question!</h1>
-<form class="mt-4 new-question-form" data-question-id="{{ question.id }}">
+<form class="mt-4 new-question-form" data-question-id="{{ question.id }}" data-question-set-id="{{ question.set_id }}">
   <div class="row mb-3">
     <div class="col-lg-8">
       <label for="questionName" class="form-label">Question</label>

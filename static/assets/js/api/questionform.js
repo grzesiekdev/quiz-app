@@ -131,4 +131,28 @@ function handleAddEditQuestions() {
     });
 }
 
-export {handleAddEditQuestions};
+function handleDeleteQuestion() {
+    // Attach a click event handler to the "Delete question" button
+    $(document).on("click", ".new-question-form .btn-danger", function (event) {
+        event.preventDefault();
+
+        // Get the question ID from the data attribute of the form
+        const form = $(this).closest(".new-question-form");
+        const questionId = form.data("question-id");
+        const questionSetId = form.data("question-set-id");
+
+        // Make an AJAX request to delete the question
+        $.ajax({
+            url: `/questions/${questionId}`,
+            type: 'DELETE',
+            success: function (data) {
+                window.location.href = `/set-of-questions/${questionSetId}`;
+            },
+            error: function (xhr, textStatus, error) {
+                console.log('Error deleting question:', error);
+            }
+        });
+    });
+}
+
+export {handleAddEditQuestions, handleDeleteQuestion};
