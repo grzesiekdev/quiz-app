@@ -69,7 +69,10 @@ def update_question(db: Session, question_id: int, question: schemas.QuestionUpd
     db_question = db.query(models.Question).filter(models.Question.id == question_id).first()
     
     if db_question:
+        db_question.question_text = question.question_text
+        db_question.answers = question.answers
         db_question.correct_answers = question.correct_answers
+        db_question.set_id = question.set_id
         db.commit()
         db.refresh(db_question)
     

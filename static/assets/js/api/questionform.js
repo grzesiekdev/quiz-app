@@ -50,74 +50,85 @@ function populateSelect() {
 }
 
 
-function handleAddingNewQuestions(){
+function handleAddEditQuestions() {
     createNewAnswer();
     populateSelect();
 
     $(document).on("click", ".remove-answer", function () {
-      $(this).closest(".input-group").remove();
+        $(this).closest(".input-group").remove();
     });
 
-     $(".new-question-form").submit(function (event) {
-      event.preventDefault();
+    $(".new-question-form").submit(function (event) {
+        event.preventDefault();
 
-      let question = $("#questionName").val();
-      let answers = [];
-      let correctAnswers = [];
-      let selectedQuiz = $("#quiz").val();
+        let isEdit = $("#isEdit").val() === "true";
+        let question = $("#questionName").val();
+        let answers = [];
+        let correctAnswers = [];
+        let selectedQuiz = $("#quiz").val();
+        let form = $('form');
+        let questionId = form.data('questionId');
 
-      // Get answers and check if they are correct
-      $(".answer-input").each(function () {
-        let answerText = $(this).val();
-          let isCorrect = $(this).closest(".input-group").find(".correct-answer-checkbox").prop("checked");
-        answers.push(answerText);
-        if (isCorrect) {
-            correctAnswers.push(answerText);
+        // Get answers and check if they are correct
+        $(".answer-input").each(function () {
+            let answerText = $(this).val();
+            let isCorrect = $(this).closest(".input-group").find(".correct-answer-checkbox").prop("checked");
+            answers.push(answerText);
+            if (isCorrect) {
+                correctAnswers.push(answerText);
+            }
+        });
+        answers = answers.join(',');
+        correctAnswers = correctAnswers.join(',');
+
+        // Prepare data to send
+        let data = {
+            'question_text': question,
+            'answers': answers,
+            'correct_answers': correctAnswers,
+            'set_id': selectedQuiz
+        };
+
+
+        let jsonPayload = JSON.stringify(data);
+
+        let endpoint = isEdit ? `/questions/${questionId}` : '/questions/';
+
+        let requestMethod = isEdit ? 'PUT' : 'POST';
+
+        fetch(endpoint, {
+            method: requestMethod,
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: jsonPayload,
+        })
+        .then((response) => {
+            if (response.ok) {
+                return response.json();
+            } else {
+                return response.json().then((errorResponse) => {
+                    throw new Error(errorResponse.detail);
+                });
+            }
+        })
+        .then((responseJson) => {
+            let successBanner = $('<div class="alert alert-success" role="alert">Question ' + (isEdit ? 'edited' : 'added') + ' successfully!</div>');
+            $("form").before(successBanner);
+        })
+        .catch((error) => {
+            let errorBanner = $('<div class="alert alert-danger" role="alert">' + error.message + ' </div>');
+            $("form").before(errorBanner);
+            console.error(error.message);
+        });
+
+        // Clear form after submission
+        if (!isEdit) {
+            $("#questionName").val("");
+            $(".answer-input").val("");
+            $(".correct-answer-checkbox").prop("checked", false);
         }
-      });
-       answers = answers.join(',');
-       correctAnswers = correctAnswers.join(',');
-      // Prepare data to send
-      let data = {
-        'question_text': question,
-        'answers': answers,
-        'correct_answers': correctAnswers,
-        'set_id': selectedQuiz
-      };
-
-         let jsonPayload = JSON.stringify(data);
-
-         fetch("/questions/", {
-             method: "POST",
-             headers: {
-                 "Content-Type": "application/json",
-             },
-             body: jsonPayload,
-         })
-             .then((response) => {
-                 if (response.ok) {
-                     return response.json();
-                 } else {
-                     return response.json().then((errorResponse) => {
-                         throw new Error(errorResponse.detail);
-                     });
-                 }
-             })
-             .then((responseJson) => {
-                 let successBanner = $('<div class="alert alert-success" role="alert">Question added successfully!</div>');
-                 $("form").before(successBanner);
-             })
-             .catch((error) => {
-                 let errorBanner = $('<div class="alert alert-danger" role="alert">' + error.message + ' </div>');
-                 $("form").before(errorBanner);
-                 console.error(error.message);
-             });
-
-      // Clear form after submission
-      $("#questionName").val("");
-      $(".answer-input").val("");
-      $(".correct-answer-checkbox").prop("checked", false);
     });
 }
 
-export {handleAddingNewQuestions};
+export {handleAddEditQuestions};

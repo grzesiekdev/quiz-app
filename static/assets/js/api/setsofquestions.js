@@ -141,7 +141,6 @@ function editQuiz() {
             'name': quizName,
             'description': quizDescription,
         };
-        console.log(data);
 
         // Make a PUT request to the FastAPI endpoint
         fetch(`/set-of-questions/${setId}`, {

@@ -49,7 +49,7 @@ def edit_question(question_id: int, request: Request, db: Session = Depends(data
     db_question = crud.get_question(db, question_id=question_id)
     if db_question is None:
         raise HTTPException(status_code=404, detail="Question not found")
-    return templates.TemplateResponse("panel/quiz/edit-question.html", {'request': request})
+    return templates.TemplateResponse("panel/quiz/edit-question.html", {'request': request, 'question': db_question})
 
 
 @app.post("/questions/", response_model=schemas.Question)
