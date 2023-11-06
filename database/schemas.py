@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-from typing import List
+from typing import List, Dict
 
 
 class QuestionBase(BaseModel):
@@ -40,14 +40,18 @@ class SetOfQuestions(SetOfQuestionsBase):
 
     class Config:
         from_attributes = True
-        
-        
+
+
+class SetOfQuestionsUpdate(SetOfQuestionsBase):
+    pass
+
+
 class QuestionUpdate(BaseModel):
     question_text: str
     answers: str
     correct_answers: str
     set_id: int
-    
+
+
 class TestResult(BaseModel):
-    user_answers: list[str]
-    correct_answers: list[str]
+    user_answers: Dict[int, List[str]]

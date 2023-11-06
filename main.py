@@ -27,13 +27,30 @@ def read_root(request: Request):
 
 
 @app.get("/new-quiz", response_class=HTMLResponse)
-def read_root(request: Request):
+def new_quiz_template(request: Request):
     return templates.TemplateResponse("panel/quiz/new-quiz.html", {'request': request})
 
 
+@app.get("/edit-quiz/{set_id}", response_class=HTMLResponse)
+def edit_quiz(set_id: int, request: Request, db: Session = Depends(database.get_db)):
+    db_set_of_questions = crud.get_set_of_questions(db, set_id=set_id)
+    if db_set_of_questions is None:
+        raise HTTPException(status_code=404, detail="Set of questions not found")
+    return templates.TemplateResponse("panel/quiz/edit-quiz.html", {'request': request, 'set_of_questions': db_set_of_questions})
+
+
 @app.get("/new-question", response_class=HTMLResponse)
-def read_root(request: Request):
+def new_question_template(request: Request):
     return templates.TemplateResponse("panel/quiz/new-question.html", {'request': request})
+
+
+@app.get("/edit-question/{question_id}", response_class=HTMLResponse)
+def edit_question(question_id: int, request: Request, db: Session = Depends(database.get_db)):
+    db_question = crud.get_question(db, question_id=question_id)
+    if db_question is None:
+        raise HTTPException(status_code=404, detail="Question not found")
+    return templates.TemplateResponse("panel/quiz/edit-question.html", {'request': request, 'question': db_question})
+
 
 @app.post("/questions/", response_model=schemas.Question)
 def create_question(question: schemas.QuestionCreate, db: Session = Depends(database.get_db)):
@@ -45,7 +62,6 @@ def create_question(question: schemas.QuestionCreate, db: Session = Depends(data
         raise HTTPException(status_code=400, detail="At least one correct answer is required")
 
     return crud.create_question(db=db, question=question, set_id=question.set_id)
-
 
 
 @app.get("/questions/", response_model=list[schemas.Question])
@@ -120,6 +136,18 @@ def create_question_in_set(set_id: int, question: schemas.QuestionCreate, db: Se
     return crud.create_question_in_set(db=db, question=question, set_id=set_id)
 
 
+@app.put("/set-of-questions/{set_id}", response_model=schemas.SetOfQuestions)
+def update_set_of_questions(
+    set_id: int, set_of_questions: schemas.SetOfQuestionsUpdate, db: Session = Depends(database.get_db)
+):
+    db_set_of_questions = crud.get_set_of_questions(db, set_id=set_id)
+    if db_set_of_questions is None:
+        raise HTTPException(status_code=404, detail="Set of questions not found")
+
+    updated_set_of_questions = crud.update_set_of_questions(db=db, set_id=set_id, set_of_questions=set_of_questions)
+    return updated_set_of_questions
+
+
 @app.delete("/set-of-questions/{set_id}", response_model=schemas.SetOfQuestions)
 def delete_set_of_questions(set_id: int, db: Session = Depends(database.get_db)):
     set_of_questions = crud.get_set_of_questions(db, set_id)
@@ -131,10 +159,18 @@ def delete_set_of_questions(set_id: int, db: Session = Depends(database.get_db))
 
 
 @app.post("/submit-test/")
-def submit_test(test_result: schemas.TestResult):
+def submit_test(test_result: schemas.TestResult, db: Session = Depends(database.get_db)):
     score = 0
-    for user_answer, correct_answer in zip(test_result.user_answers, test_result.correct_answers):
-        if user_answer == correct_answer:
-            score += 1
+    for question_id, selected_options in test_result.user_answers.items():
+        question = crud.get_question(db, question_id)
+        if question:
+            correct_answers = set(question.correct_answers.split(","))
+            if set(selected_options) == correct_answers:
+                score += 1
 
     return {"score": score}
+
+
+@app.get("/test-results", response_class=HTMLResponse)
+def read_root(request: Request):
+    return templates.TemplateResponse("panel/quiz/test-results.html", {'request': request})

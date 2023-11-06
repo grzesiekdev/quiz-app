@@ -1,0 +1,16 @@
+{% extends "panel/page.html" %}
+{% block content %}
+<h1 class="quiz-name">Edit quiz!</h1>
+<form class="mt-4 edit-quiz-form">
+  <div class="mb-3">
+    <label for="quizName" class="form-label">Quiz name</label>
+    <input type="text" class="form-control" id="quizName" value="{{ set_of_questions.name }}">
+  </div>
+  <div class="mb-3">
+    <label for="quizDescription" class="form-label">Quiz description</label>
+    <textarea class="form-control" id="quizDescription">{{ set_of_questions.description }}</textarea>
+  </div>
+    <input type="hidden" id="setId" value="{{ set_of_questions.id }}">
+  <button type="submit" class="btn btn-success">Submit</button>
+</form>
+{% endblock %}

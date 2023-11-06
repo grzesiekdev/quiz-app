@@ -1,0 +1,49 @@
+{% extends "panel/page.html" %}
+{% block content %}
+<h1 class="quiz-name">Edit question!</h1>
+<form class="mt-4 new-question-form" data-question-id="{{ question.id }}" data-question-set-id="{{ question.set_id }}">
+  <div class="row mb-3">
+    <div class="col-lg-8">
+      <label for="questionName" class="form-label">Question</label>
+      <input type="text" class="form-control" id="questionName" value="{{ question.question_text }}">
+    </div>
+  </div>
+  <div class="mb-3">
+    <label for="answers" class="form-label">Answers</label> <br>
+    <small>Mark checkbox on the left of each correct answer for this question</small>
+    <div id="answers-container" class="my-3">
+    {% set answers = question.answers.split(',') %}
+    {% set correct_answers = question.correct_answers.split(',') %}
+        <div class="row">
+            {% for answer in answers %}
+        <div class="input-group mb-3">
+          <div class="input-group-append mx-2">
+            <div class="input-group-text">
+              <input type="checkbox" class="correct-answer-checkbox" title="Mark as correct" {{ 'checked' if answer in question.correct_answers else '' }}>
+            </div>
+          </div>
+          <div class="col-lg-6">
+            <input type="text" class="form-control answer-input" placeholder="Enter answer text" value="{{ answer }}">
+          </div>
+          <div class="mx-2">
+            <button class="btn btn-outline-secondary remove-answer" type="button">Remove</button>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+    <button class="btn btn-primary add-answer" type="button">Add new answer</button>
+  </div>
+  <div class="mb-3">
+    <label for="quiz" class="form-label">Answers</label> <br>
+    <small>Select for which quiz you want to add this question</small> <br>
+    <div class="select">
+    <select name="quiz" id="quiz" class="quiz-set-select my-3">
+    </select>
+    </div>
+  </div>
+  <button type="submit" class="btn btn-success">Edit question</button>
+  <button type="submit" class="btn btn-danger">Delete question</button>
+    <input type="hidden" id="isEdit" value="true">
+</form>
+{% endblock %}

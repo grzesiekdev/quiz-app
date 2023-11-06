@@ -28,17 +28,18 @@ max-width: 100% !important;
     font-size: 15px;
     box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.2), 0 1px 2px 0 rgba(0, 0, 0, 0.19);
     width: 52.5px;
+    cursor: pointer;
 }
 
 .card-action svg {
-    margin-left: 4px;
+    margin-left:5px;
 }
 
-.card-action:hover {
-    color: #fff;
-    background: #E26D5C;
-    -webkit-animation: pulse 1.5s infinite;
-}
+/*.card-action:hover {*/
+/*    color: #fff;*/
+/*    background: #E26D5C;*/
+/*    -webkit-animation: pulse 1.5s infinite;*/
+/*}*/
 
 .card-heading {
     font-size: 18px;
