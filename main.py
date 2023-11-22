@@ -161,16 +161,21 @@ def delete_set_of_questions(set_id: int, db: Session = Depends(database.get_db))
 @app.post("/submit-test/")
 def submit_test(test_result: schemas.TestResult, db: Session = Depends(database.get_db)):
     score = 0
+    number_of_questions = 0
     for question_id, selected_options in test_result.user_answers.items():
         question = crud.get_question(db, question_id)
         if question:
             correct_answers = set(question.correct_answers.split(","))
+            number_of_questions += 1
             if set(selected_options) == correct_answers:
                 score += 1
 
-    return {"score": score}
+    return {"score": score, "numberOfQuestions": number_of_questions}
 
 
-@app.get("/test-results", response_class=HTMLResponse)
-def read_root(request: Request):
-    return templates.TemplateResponse("panel/quiz/test-results.html", {'request': request})
+@app.get("/test-results/{set_id}", response_class=HTMLResponse)
+def read_root(set_id: int, request: Request, db: Session = Depends(database.get_db)):
+    set_of_questions = crud.get_set_of_questions(db, set_id)
+    if set_of_questions is None:
+        raise HTTPException(status_code=404, detail="Set of questions not found")
+    return templates.TemplateResponse("panel/quiz/test-results.html", {'request': request, "set_of_questions": set_of_questions})

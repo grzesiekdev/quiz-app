@@ -217,10 +217,10 @@ function collectAndSendAnswers() {
       // Store the selected options in the userAnswers object
       userAnswers[questionNumber] = selectedOptions;
     });
-
+  const setOfQuestions = $('.quiz-name').data('quiz-id');
     // Convert the userAnswers object to a JSON string
       let answersJSON = JSON.stringify(userAnswers);
-        window.location.href = "/test-results?answers=" + encodeURIComponent(answersJSON);
+        window.location.href = "/test-results/" + setOfQuestions+"?answers=" + encodeURIComponent(answersJSON);
   });
 }
 
@@ -251,7 +251,34 @@ for (const questionNumber in answers) {
       success: function (response) {
         // Display the score on the page
         const score = response.score;
-        $("#score").text("Your Score: " + score);
+        const numberOfQuestions = response.numberOfQuestions;
+        $(".score-placeholder").text("Your Score: " + score + '/' + numberOfQuestions);
+          $(".share-results").on("click", function (e) {
+              e.preventDefault();
+              navigator.clipboard.writeText(window.location.href).then(() => {
+                  console.log("Link copied succesfully!");
+                  $(".alert.alert-success").remove();
+                    let successBanner = $('<div class="alert alert-success" role="alert">Link copied succesfully!</div>');
+                    $("#score").before(successBanner);
+                    setTimeout(function() {
+                      successBanner.remove();
+                    }, 5000);
+                }, () => {
+                  console.log("Couldn't copy link");
+                });
+          });
+
+        $.each(userAnswers, function (questionId, selectedAnswers) {
+            let questionElement = $('[data-question-id="' + questionId + '"]');
+
+            $.each(selectedAnswers, function (_, selectedAnswer) {
+                let labelElement = questionElement.find('label:contains("' + selectedAnswer + '")');
+                console.log(selectedAnswer);
+
+                        var inputElement = labelElement.find(':input');
+            inputElement.attr('checked', 'true');
+            });
+        });
       },
       error: function (xhr, textStatus, error) {
         console.log('Error when submitting quiz:', xhr.responseText);

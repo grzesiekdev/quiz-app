@@ -212,3 +212,32 @@ select {
 select::-ms-expand {
     display: none;
 }
+
+.correct-answer .checkmark {
+    background: white !important;
+    border: 1px solid green;
+}
+
+.correct-answer input[checked=checked]+.checkmark:after {
+    background: green !important;
+}
+
+.correct-answer {
+    color: green;
+}
+
+.incorrect-answer input[checked=checked]+.checkmark {
+    background: white !important;
+    border: 1px solid red;
+}
+
+.incorrect-answer input[checked=checked]+.checkmark:after {
+    background: red !important;
+}
+
+.incorrect-answer:has(> input[checked=checked]) {
+    color: red;
+}
+
+
+
