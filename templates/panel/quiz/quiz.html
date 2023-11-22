@@ -1,6 +1,6 @@
 {% extends "panel/page.html" %}
 {% block content %}
-<h1 class="quiz-name">
+<h1 class="quiz-name" data-quiz-id="{{ set_of_questions.id }}">
     {{ set_of_questions.name }}
     <a href="/edit-quiz/{{ set_of_questions.id }}" style="font-size:19px;" title="Edit quiz">
     <i class="fa-solid fa-pen"></i>
@@ -38,7 +38,7 @@
             <button class="btn btn-success next-question-button">Next</button>
         </div>
         <div class="ml-auto mr-sm-5 finish-button" hidden>
-            <a href="/test-results" class="btn btn-success">Finish</a>
+            <a href="/test-results/{{ set_of_questions.id }}" class="btn btn-success">Finish</a>
         </div>
     </div>
 {% endblock %}

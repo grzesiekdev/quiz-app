@@ -1,4 +1,22 @@
 {% extends "panel/page.html" %}
 {% block content %}
-<div id="score">Score: </div>
+    <h2 id="score"> {{ set_of_questions.name }} <br> <br> <span class="score-placeholder"></span> <a class="mx-3 share-results" href="" title="Click to copy this link and share your result with friends!"><i class="fa-solid fa-share"></i></a></h2>
+    {% for question in set_of_questions.questions %}
+    {% set outer_loop_index = loop.index %}
+    <div class="question ml-sm-5 pl-sm-5 pt-2" data-question-id="{{ question.id }}">
+        <div class="py-2 h5"><b>{{ outer_loop_index }}. {{ question.question_text }}</b></div>
+        {% set answers = question.answers.split(',') %}
+        {% set correct_answers = question.correct_answers.split(',') %}
+        {% set type = 'checkbox' if correct_answers|length > 1 else 'radio' %}
+        <div class="ml-md-3 ml-sm-3 pl-md-5 pt-sm-0 pt-3" id="options">
+            {% for answer in answers %}
+            <label class="options {{ 'correct-answer' if answer in correct_answers else 'incorrect-answer' }}">{{ answer }}
+                <input type="{{ type }}" name="{{outer_loop_index}}_radio" disabled>
+                <span class="checkmark"></span>
+            </label>
+            {% endfor %}
+        </div>
+    </div>
+{% endfor %}
+    <a href="/set-of-questions/{{ set_of_questions.id }}" class="btn btn-success mt-5">Try again!</a>
 {% endblock %}
