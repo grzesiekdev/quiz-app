@@ -16,7 +16,7 @@ function createSetCard(name, description, id, numberOfQuestions) {
                 .append('<img src="https://altc.alt.ac.uk/blog/wp-content/uploads/sites/1112/2022/08/Blog-Cover-Guidlines-707x409.png">')
             )
             .append($('<a class="card-action"><i class="fa fa-times"></i></a>'))
-            .append($('<div class="card-heading set-title">').text(name))
+            .append($('<div class="card-heading set-title">').html(name + '<a class="mx-1 copy-link" href="' + window.location.href + 'set-of-questions/' + id + '" title="Click to copy link to this quiz and share it with friends!"><i class="fa-solid fa-share"></i></a>'))
             .append($('<div class="card-text set-number-of-questions" style="font-size:12px;">').text("Number of questions: " + numberOfQuestions))
             .append($('<div class="card-text set-description">').text(description))
             .append('<div class="card-text set-date"><!-- TODO: Date will be here... --></div>')
@@ -33,6 +33,20 @@ getSetsOfQuestions('/sets-of-questions/')
         data.forEach(set => {
             let numberOfQuestions = set.questions.length;
             createSetCard(set.name, set.description, set.id, numberOfQuestions);
+              $(".copy-link").on("click", function (e) {
+              e.preventDefault();
+              navigator.clipboard.writeText($('.copy-link').attr('href')).then(() => {
+                  console.log("Link copied succesfully!");
+                  $(".alert.alert-success").remove();
+                    let successBanner = $('<div class="alert alert-success" role="alert">Link copied succesfully!</div>');
+                    $(".list-of-quizes").before(successBanner);
+                    setTimeout(function() {
+                      successBanner.remove();
+                    }, 5000);
+                }, () => {
+                  console.log("Couldn't copy link");
+                });
+          });
         });
     })
     .catch(error => {
