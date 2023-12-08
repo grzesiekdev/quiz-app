@@ -67,5 +67,8 @@ W wersji MVP aplikacja będzie działać w przeglądarce. Użykownik będzie mia
 1. Scoreboard?
 
 ## Progress
+Start projektu:
 ![Trello](/docs/trello.png)
+Koniec projektu:
+![Trello](/docs/trello-2.png)
 ## References
